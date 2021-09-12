@@ -33,7 +33,7 @@
 		let counter = document.getElementById("counter");
 
 		let currentTime = new Date().getTime();
-		let probablyOpen = new Date(Date.UTC(2021, 3, 12, 18, 0));
+		let probablyOpen = new Date(Date.UTC(2021, 11, 11, 18, 0));
 		let actual_timediff = Math.floor((probablyOpen - currentTime) / 1000);
 		let half_life = actual_timediff / 2;
 		let fake_counter = Math.min(60 * 60 * 4 * Math.random(), actual_timediff);
