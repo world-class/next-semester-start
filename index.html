@@ -16,6 +16,7 @@
 	<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
 	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 
 	<script type="text/babel">
 	ReactDOM.render([
@@ -39,7 +40,15 @@
 		let fake_counter = Math.min(60 * 60 * 4 * Math.random(), actual_timediff);
 
 		let x = 0;
-		
+
+		function pluralize(count, word) {
+
+			if (count !== 1) {
+				return `${word}s`;
+			}
+			return word;
+		}
+
 		function updateCounter(elem) {
 		  x++;
 		  let timediff;
@@ -50,8 +59,35 @@
 		    timediff = Math.floor((fake_counter - 3) * 2 ** ((-1 * x) / half_life));
 		  }
 
+			let now = moment();
+			let end = moment(new Date(Date.UTC(2021, 09, 11, 00, 0))); // Semester start date
+			let duration = moment.duration(end.diff(now));
+
+			durationArr = [];
+			if (duration._data.years > 0) {
+				durationArr.push(`${duration._data.years} ${pluralize(duration._data.years, 'year')}`);
+			}
+			if (duration._data.months > 0) {
+				durationArr.push(`${duration._data.months} ${pluralize(duration._data.months, 'month')}`);
+			}
+			if (duration._data.days > 0) {
+				durationArr.push(`${duration._data.days} ${pluralize(duration._data.days, 'day')}`);
+			}
+			if (duration._data.weeks > 0) {
+				durationArr.push(`${duration._data.weeks} ${pluralize(duration._data.weeks, 'week')}`);
+			}
+			if (duration._data.hours > 0) {
+				durationArr.push(`${duration._data.hours} ${pluralize(duration._data.hours, 'hour')}`);
+			}
+			if (duration._data.minutes > 0) {
+				durationArr.push(`${duration._data.minutes} ${pluralize(duration._data.minutes, 'minute')}`);
+			}
+			if (duration._data.seconds > 0) {
+				durationArr.push(`${duration._data.seconds} ${pluralize(duration._data.seconds, 'second')}`);
+			}
+
 		  time = new Date(timediff * 1000);
-		  countDownString = `${time.getUTCHours()} :${time.getUTCMinutes()}:${time.getUTCSeconds()}`;
+		  countDownString = durationArr.join(', ');
 		  counter.innerHTML =
 		    timediff > 1 && actual_timediff > 0
 		      ? `Starting in ${countDownString}`
